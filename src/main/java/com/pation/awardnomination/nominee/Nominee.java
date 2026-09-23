@@ -17,6 +17,8 @@ public class Nominee {
     private String evidenceFileName; // මේ අලුත් variable එක පරණ එකේ තිබ්බෙ නෑ
 
     private String status = "Draft";
+    
+    private String userEmail;
 
     // Default Constructor: Spring Boot/JPA වලට object එකක් හදාගන්න මේක අනිවාර්යයි (Error 1 එක හැදෙන්නේ මේකෙන්)
     public Nominee() {}
@@ -36,6 +38,9 @@ public class Nominee {
 
     public String getEvidenceFileName() { return evidenceFileName; }
     public void setEvidenceFileName(String evidenceFileName) { this.evidenceFileName = evidenceFileName; }
+
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }

@@ -47,6 +47,11 @@ public class NomineeController {
             newNominee.setBiography(biography);
             newNominee.setCompanyName(companyName);
             newNominee.setEvidenceFileName(evidenceFile.getOriginalFilename());
+            
+            org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated()) {
+                newNominee.setUserEmail(auth.getName());
+            }
 
             // Saving to the Database using the Repository
             nomineeRepository.save(newNominee);
