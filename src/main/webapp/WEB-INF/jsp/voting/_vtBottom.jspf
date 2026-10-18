@@ -1,0 +1,9 @@
+<%-- Voting page footer (ASCII only). --%>
+</main>
+<footer class="vt-foot">
+  <span>Ballot Booth &middot; Registered voters</span>
+  <span>One vote per award category</span>
+  <span>Every ballot is sealed in the <a href="<%= cx %>/dispute/logs">transparency log</a></span>
+</footer>
+</body>
+</html>

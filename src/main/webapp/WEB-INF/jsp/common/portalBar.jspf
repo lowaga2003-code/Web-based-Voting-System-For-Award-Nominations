@@ -1,0 +1,62 @@
+<%--
+  [INTEGRATION] System navigation bar: brand, "Dashboard" link, signed-in user, Logout.
+  Used by the Nominee module pages. Another member can add it to their pages too (optional) by putting the
+  JSP include directive for this file (file="/WEB-INF/jsp/common/portalBar.jspf") right after <body>.
+  Variable names start with "pb" so they never clash with the page's own scriptlet variables.
+  Keep this file ASCII-only (use HTML entities such as &larr;): an included fragment has no page encoding of its own.
+--%>
+<%
+    java.security.Principal pbPrincipal = request.getUserPrincipal();
+    String pbUser = (pbPrincipal != null) ? pbPrincipal.getName() : "";
+    pbUser = pbUser.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
+%>
+<style>
+    .pb-bar {
+        position: fixed; top: 0; left: 0; right: 0; height: 52px; z-index: 1000;
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        padding: 0 20px; box-sizing: border-box;
+        background: rgba(5, 6, 15, 0.8);
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 216, 115, 0.18);
+        font-family: 'Manrope', 'Segoe UI', Tahoma, sans-serif;
+    }
+    .pb-bar * { box-sizing: border-box; }
+    .pb-brand {
+        display: inline-flex; align-items: center; gap: 9px; min-width: 0;
+        color: #eef0fa; text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: 0.3px; white-space: nowrap;
+    }
+    .pb-brand svg { width: 20px; height: 20px; color: #ffd873; flex-shrink: 0; }
+    .pb-right { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .pb-link {
+        color: #eef0fa; text-decoration: none; font-size: 13.5px; font-weight: 600;
+        padding: 7px 12px; border-radius: 9px; white-space: nowrap;
+    }
+    .pb-link:hover { background: rgba(255, 255, 255, 0.08); color: #ffd873; }
+    .pb-user { color: #a8acc9; font-size: 13px; max-width: 230px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pb-logout {
+        color: #05060f; background: linear-gradient(135deg, #ffd873, #e8a93c); text-decoration: none;
+        font-size: 13px; font-weight: 700; padding: 7px 14px; border-radius: 9px; white-space: nowrap;
+    }
+    .pb-logout:hover { box-shadow: 0 6px 14px rgba(232, 169, 60, 0.35); }
+    .pb-bar a:focus-visible { outline: 2px solid #ffd873; outline-offset: 2px; }
+    .pb-spacer { height: 28px; }
+    @media (max-width: 600px) {
+        .pb-bar { padding: 0 12px; }
+        .pb-user, .pb-brand span { display: none; }
+    }
+</style>
+<nav class="pb-bar" aria-label="Main navigation">
+    <a class="pb-brand" href="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M12 6.5L13.2 9.9L16.8 10.2L14 12.5L14.9 16L12 14.1L9.1 16L10 12.5L7.2 10.2L10.8 9.9Z" fill="currentColor"/>
+        </svg>
+        <span>Award Nomination System</span>
+    </a>
+    <div class="pb-right">
+        <a class="pb-link" href="/dashboard">&larr; Dashboard</a>
+        <span class="pb-user" title="Signed in as <%= pbUser %>"><%= pbUser %></span>
+        <a class="pb-logout" href="/logout">Logout</a>
+    </div>
+</nav>
+<div class="pb-spacer" aria-hidden="true"></div>

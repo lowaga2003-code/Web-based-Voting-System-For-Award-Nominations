@@ -1,0 +1,48 @@
+<%-- Voting page header. The including page sets vtTitle and vtTab (ASCII only in this fragment). --%>
+<%@ page import="com.pation.awardnomination.voting.VotingHtml" %>
+<%@ page import="com.pation.awardnomination.admin.User" %>
+<%
+    String cx = request.getContextPath();
+    User vtVoter = (User) request.getAttribute("voter");
+    String vtOk = (String) request.getAttribute("vtOk");
+    String vtErr = (String) request.getAttribute("vtError");
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= VotingHtml.h(vtTitle) %> &middot; Ballot Booth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="<%= cx %>/css/voting-module.css">
+<script src="<%= cx %>/js/voting-module.js" defer></script>
+</head>
+<body class="vt-body">
+<header class="vt-top">
+  <div class="vt-top-in">
+    <a class="vt-brand" href="<%= cx %>/voter/ballot">
+      <span class="vt-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+      <span class="vt-brand-text"><strong>Ballot Booth</strong><small>Voting &middot; one vote per award</small></span>
+    </a>
+    <div class="vt-top-right">
+      <% if (vtVoter != null) { %><span class="vt-me"><b><%= VotingHtml.h(VotingHtml.initials(vtVoter.getUsername())) %></b><%= VotingHtml.h(vtVoter.getUsername()) %> &middot; Registered voter</span><% } %>
+      <a class="vt-top-link" href="<%= cx %>/dashboard">Main dashboard</a>
+      <a class="vt-top-link" href="<%= cx %>/logout">Sign out</a>
+    </div>
+  </div>
+</header>
+<nav class="vt-nav" aria-label="Voting">
+  <a href="<%= cx %>/voter/ballot" class="<%= "ballot".equals(vtTab) ? "on" : "" %>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>My ballot</a>
+  <a href="<%= cx %>/voter/ballot/history" class="<%= "history".equals(vtTab) ? "on" : "" %>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>My receipts</a>
+  <a href="<%= cx %>/voter/ballot/results" class="<%= "results".equals(vtTab) ? "on" : "" %>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>Results</a>
+  <a href="<%= cx %>/timeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Award calendar</a>
+</nav>
+<main class="vt-main">
+<% if (vtOk != null) { %>
+<div class="vt-flash vt-flash-ok" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span><%= VotingHtml.h(vtOk) %></span></div>
+<% } %>
+<% if (vtErr != null) { %>
+<div class="vt-flash vt-flash-err" role="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg><span><%= VotingHtml.h(vtErr) %></span></div>
+<% } %>

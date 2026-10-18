@@ -1,0 +1,50 @@
+<%--
+  MODULE 6 - Policy & Consent Management: shared <head> part (fonts + the green stylesheet) and the
+  small helpers every Module 6 page uses. The including page must declare String pmTitle first.
+  Keep this file ASCII-only (use HTML entities): an included fragment has no page encoding of its own.
+--%>
+<%!
+    /** HTML-escape a value before printing it (stops cross-site scripting). */
+    private static String h(Object value) {
+        return com.pation.awardnomination.policy.PolicyHtml.esc(value);
+    }
+
+    /** aria-current for the navigation link of the page that is open. */
+    private static String pmCurrent(String pageKey, String linkKey) {
+        return linkKey.equals(pageKey) ? " aria-current=\"page\"" : "";
+    }
+
+    /** The round version seal shown on documents (green = current, grey = previous version, amber = draft). */
+    private static String pmSeal(com.pation.awardnomination.policy.PolicyDocument d, boolean small) {
+        String css = "pm-seal" + (small ? " is-small" : "")
+                + (d.isDraft() ? " is-draft" : (d.isCurrent() ? "" : " is-archived"));
+        String published = com.pation.awardnomination.policy.PolicyHtml.date(d.getPublishedAt());
+        String label = d.isDraft() ? "Draft, not published" : "Version " + d.getVersionLabel() + ", published " + published;
+        return "<div class=\"" + css + "\" role=\"img\" aria-label=\"" + h(label) + "\">"
+                + "<span class=\"pm-seal-label\">" + (d.isDraft() ? "Unpublished" : "Version") + "</span>"
+                + "<span class=\"pm-seal-number\">" + h(d.isDraft() ? "Draft" : d.getVersionLabel()) + "</span>"
+                + "<span class=\"pm-seal-date\">" + h(published) + "</span>"
+                + "</div>";
+    }
+
+    /** "the Privacy Policy (version 1.1) and the Terms &amp; Conditions (version 1.0)" - already HTML-escaped. */
+    private static String pmDocumentNames(java.util.List<com.pation.awardnomination.policy.PolicyDocument> docs) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < docs.size(); i++) {
+            com.pation.awardnomination.policy.PolicyDocument d = docs.get(i);
+            if (i > 0) {
+                sb.append(i == docs.size() - 1 ? " and " : ", ");
+            }
+            sb.append("the ").append(h(d.getPolicyType().getDisplayName()))
+              .append(" (version ").append(h(d.getVersionLabel())).append(")");
+        }
+        return sb.toString();
+    }
+%>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= h(pmTitle) %> | Policy &amp; Consent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/policy-module.css">

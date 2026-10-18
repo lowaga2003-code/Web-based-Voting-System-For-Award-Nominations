@@ -1,0 +1,8 @@
+<%--
+  MODULE 6 - page footer + the small page script (consent checkboxes, confirmations).
+  Keep this file ASCII-only.
+--%>
+<footer class="pm-foot">
+    <p>Award Nomination System. Module 6: Policy &amp; Consent Management.</p>
+</footer>
+<script src="/js/policy-module.js"></script>

@@ -1,0 +1,80 @@
+<%--
+  MODULE 5 - Evaluation & Selection: top of every page (header, navigation, messages).
+  The including page declares String evTitle and String evNav first. Keep this file ASCII-only.
+--%>
+<%!
+    /** HTML-escape a value before printing it. */
+    private static String h(Object value) {
+        if (value == null) {
+            return "";
+        }
+        String s = String.valueOf(value);
+        StringBuilder sb = new StringBuilder(s.length() + 16);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '&': sb.append("&amp;"); break;
+                case '<': sb.append("&lt;"); break;
+                case '>': sb.append("&gt;"); break;
+                case '"': sb.append("&quot;"); break;
+                case '\'': sb.append("&#39;"); break;
+                default: sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    private static String evOn(String page, String key) {
+        return key.equals(page) ? " aria-current=\"page\"" : "";
+    }
+
+    private static String evMark(Double d) {
+        return d == null ? "-" : String.format(java.util.Locale.ENGLISH, "%.1f", d);
+    }
+
+    private static String evUrl(String s) {
+        try {
+            return java.net.URLEncoder.encode(s == null ? "" : s, "UTF-8");
+        } catch (java.io.UnsupportedEncodingException e) {
+            return "";
+        }
+    }
+%>
+<%
+    java.security.Principal evPrincipal = request.getUserPrincipal();
+    Object evMsg = request.getAttribute("msg");
+    Object evError = request.getAttribute("error");
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= h(evTitle) %> | Selection Committee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/evaluation-module.css">
+</head>
+<body class="ev-ui">
+<header class="ev-top">
+ <div class="ev-top-inner">
+  <a class="ev-brand" href="/evaluation"><b>Selection Committee</b><span>Module 5</span></a>
+  <nav class="ev-nav" aria-label="Selection committee">
+   <a href="/evaluation"<%= evOn(evNav, "home") %>>Overview</a>
+   <a href="/evaluation/judges"<%= evOn(evNav, "judges") %>>Judges</a>
+   <a href="/evaluation/assignments"<%= evOn(evNav, "panel") %>>Judge panel</a>
+   <a href="/evaluation/rubrics"<%= evOn(evNav, "rubrics") %>>Rubrics</a>
+   <a href="/evaluation/shortlist"<%= evOn(evNav, "shortlist") %>>Shortlist</a>
+   <a href="/evaluation/results"<%= evOn(evNav, "results") %>>Results</a>
+  </nav>
+  <div class="ev-account">
+   <% if (evPrincipal != null) { %><span class="ev-user"><%= h(evPrincipal.getName()) %></span><% } %>
+   <a href="/dashboard">Main dashboard</a>
+   <a class="ev-logout" href="/logout">Log out</a>
+  </div>
+ </div>
+</header>
+<main class="ev-main" id="content">
+<% if (evMsg != null) { %><div class="ev-flash ok" role="status"><p><%= h(evMsg) %></p></div><% } %>
+<% if (evError != null) { %><div class="ev-flash err" role="alert"><p><%= h(evError) %></p></div><% } %>

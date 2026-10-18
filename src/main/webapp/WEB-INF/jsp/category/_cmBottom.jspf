@@ -1,0 +1,9 @@
+<%-- Module 2 page footer (ASCII only). --%>
+</main>
+<footer class="cm-foot">
+  <span>Module 2 &middot; Award Category Management</span>
+  <span>Every change is written to the Module 4 transparency log</span>
+  <span><a href="<%= cx %>/dispute/logs">View the ledger</a></span>
+</footer>
+</body>
+</html>

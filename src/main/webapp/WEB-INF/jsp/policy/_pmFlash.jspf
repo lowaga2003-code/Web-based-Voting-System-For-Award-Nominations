@@ -1,0 +1,14 @@
+<%--
+  MODULE 6 - success / error message after a form was sent (flash attributes pmSuccess and pmError).
+  Keep this file ASCII-only.
+--%>
+<%
+    Object pmOk = request.getAttribute("pmSuccess");
+    Object pmErr = request.getAttribute("pmError");
+%>
+<% if (pmOk != null) { %>
+<div class="pm-flash is-success" role="status"><p><%= h(pmOk) %></p></div>
+<% } %>
+<% if (pmErr != null) { %>
+<div class="pm-flash is-error" role="alert"><p><%= h(pmErr) %></p></div>
+<% } %>

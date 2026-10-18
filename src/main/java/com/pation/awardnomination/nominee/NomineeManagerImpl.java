@@ -18,7 +18,7 @@ public class NomineeManagerImpl implements NomineeManager {
     public void addNominee(Nominee nominee) throws NomineeException {
         // EXCEPTION HANDLING: Using try-catch blocks to handle potential errors safely.
         try {
-            if (nominee.getFullName() == null || nominee.getFullName().isEmpty()) {
+            if (nominee.getFullName() == null || nominee.getFullName().isEmpty()) {         /// ///////////validation////////////////////
                 // Throwing our custom exception
                 throw new NomineeException("Nominee name cannot be empty!");
             }

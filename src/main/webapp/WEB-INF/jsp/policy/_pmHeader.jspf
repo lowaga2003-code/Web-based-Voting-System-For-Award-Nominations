@@ -1,0 +1,51 @@
+<%--
+  MODULE 6 - green top bar. Uses the request attributes pmAccount / pmStaff / pmLegal (added by the
+  Module 6 controllers) and the page variable pmNav (key of the page that is open).
+  Legal & Governance Officer / System Administrator: the legal console links.
+  Everyone else: the two documents and "My privacy & consent". Guests: sign in / create account.
+  Keep this file ASCII-only.
+--%>
+<%
+    com.pation.awardnomination.admin.User pmUser = (com.pation.awardnomination.admin.User) request.getAttribute("pmAccount");
+    boolean pmIsStaff = Boolean.TRUE.equals(request.getAttribute("pmStaff"));
+    boolean pmIsLegal = Boolean.TRUE.equals(request.getAttribute("pmLegal"));
+    String pmHome = pmUser == null ? "/policy/privacy" : (pmIsStaff ? "/legal/dashboard" : "/privacy/my");
+%>
+<a class="pm-skip" href="#pm-content">Skip to content</a>
+<header class="pm-top">
+    <div class="pm-top-inner">
+        <a class="pm-brand" href="<%= pmHome %>">
+            <span class="pm-brand-mark" aria-hidden="true">&sect;</span>
+            <span class="pm-brand-name">Policy &amp; Consent</span>
+            <span class="pm-brand-sub">Module 6</span>
+        </a>
+        <nav class="pm-nav" aria-label="Policy and consent pages">
+            <% if (pmIsStaff) { %>
+            <a href="/legal/dashboard"<%= pmCurrent(pmNav, "overview") %>>Overview</a>
+            <a href="/legal/policies"<%= pmCurrent(pmNav, "policies") %>>Policies</a>
+            <a href="/legal/consents"<%= pmCurrent(pmNav, "consents") %>>Consent records</a>
+            <a href="/legal/requests"<%= pmCurrent(pmNav, "requests") %>>Data requests</a>
+            <a href="/privacy/my"<%= pmCurrent(pmNav, "my") %>>My privacy</a>
+            <% } else { %>
+            <a href="/policy/privacy"<%= pmCurrent(pmNav, "privacy") %>>Privacy Policy</a>
+            <a href="/policy/terms"<%= pmCurrent(pmNav, "terms") %>>Terms &amp; Conditions</a>
+            <% if (pmUser != null) { %>
+            <a href="/privacy/my"<%= pmCurrent(pmNav, "my") %>>My privacy &amp; consent</a>
+            <% } %>
+            <% } %>
+            <% if (pmUser != null) { %>
+            <a class="pm-nav-dash" href="/dashboard">Main dashboard</a>
+            <% } %>
+        </nav>
+        <div class="pm-account">
+            <% if (pmUser != null) { %>
+            <a class="pm-dash-link" href="/dashboard">Main dashboard</a>
+            <span class="pm-account-name" title="<%= h(pmUser.getEmail()) %>"><%= h(pmUser.getUsername()) %></span>
+            <a class="pm-signout" href="/logout">Sign out</a>
+            <% } else { %>
+            <a href="/login">Sign in</a>
+            <a class="pm-signout" href="/register">Create account</a>
+            <% } %>
+        </div>
+    </div>
+</header>
